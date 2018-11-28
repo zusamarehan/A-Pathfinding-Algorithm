@@ -20,3 +20,6 @@ h = sqrt ( (current_cell.x – goal.x)2 +
 Red - End Node <br>
 Green - Path <br>
 Dark Green - Travelled Path (Closed)<br>
+
+# Future Implementation
+1. Obtascles between paths
