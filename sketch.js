@@ -29,14 +29,24 @@ function draw() {
 
 }
 
+function mouseDragged() {
+  for(var i = 0 ; i < grid.gridData.length ; i++){
+    if(grid.clicked(i)){
+      grid.gridData[i].block = true;
+    }
+  }
+}
+
 function mousePressed(){
 
     for(var i = 0 ; i < grid.gridData.length ; i++){
 
-      if(grid.clicked(i)){
+
+
+      if(grid.clicked(i) && keyIsPressed){
         
-        grid.startPointData.availableStartPoint = true;
-        grid.startPointData.startPoint = i;
+        // grid.startPointData.availableStartPoint = true;
+        // grid.startPointData.startPoint = i;
 
         pathFinder.currOpen = i;
         pathFinder.doneCalculationData = false;

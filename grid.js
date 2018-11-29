@@ -71,6 +71,9 @@ var createGrid = function(_gridX,_gridY){
                 if(this.gridData[d].visted){
                     fill(color(0,100,0));
                 }
+                if(this.gridData[d].block){
+                    fill(color(0));
+                }
                 rect(this.gridData[d].cellX,this.gridData[d].cellY,this.gridData[d].cellWidth,this.gridData[d].cellHeight);
                 push()
                 fill(0)
@@ -114,8 +117,8 @@ var createGrid = function(_gridX,_gridY){
 
             if(mouseY > this.gridData[_i].cellY && mouseY < (this.gridData[_i].cellY+this.gridData[_i].cellWidth)){
                 
-                this.gridData[_i].openState = true;
-                this.gridData[_i].startPoint = _i;
+                // this.gridData[_i].openState = true;
+                // this.gridData[_i].startPoint = _i;
                 return true;
     
             }
@@ -130,47 +133,68 @@ var createGrid = function(_gridX,_gridY){
         var newIndex = -1;
         var loopIndex = -1;
         var temp = false;
-        for(var f = 0 ; f < pathFinder.calculatedData.length ; f++){
 
-            console.log(+pathFinder.calculatedData[f].value);
-            if(+pathFinder.calculatedData[f].value != -1){
-                
-                if(f == 0 || temp){
-                    newLowest = +pathFinder.calculatedData[f].value;
-                    newIndex = +pathFinder.calculatedData[f].cellID;
-                    temp = false;
-                    loopIndex = f;
-                }
-                else if(+pathFinder.calculatedData[f].value == 10 || +pathFinder.calculatedData[f].value == 14){
-                    noLoop(); 
-                }
-                else if(+pathFinder.calculatedData[f].value < newLowest){
-                    newLowest = +pathFinder.calculatedData[f].value;
-                    newIndex = +pathFinder.calculatedData[f].cellID;
-                    // console.log(newLowest,+pathFinder.calculatedData[f].cellID);
-                    loopIndex = f;
-                }
-            }else{
-                temp = true;
-            }
-            
-        }
-        
+        var tempArr = [];
         for(var c = 0 ; c < pathFinder.calculatedData.length ; c++){
-            if(pathFinder.calculatedData[c].cellID != newIndex){
-                // console.log(pathFinder.calculatedData[c].cellID + '+++++++++++');
-                if(grid.gridData[pathFinder.calculatedData[c].cellID] != undefined){
-                    if(grid.gridData[pathFinder.calculatedData[c].cellID-1].travel != true){
-                        grid.gridData[pathFinder.calculatedData[c].cellID-1].visted = true;
-                    }
-                }
+            if(pathFinder.calculatedData[c].block || +pathFinder.calculatedData[c].value == -1 || pathFinder.calculatedData[c].travel){
+                tempArr.push(c);
+            }
+        }
+
+        newLowest = pathFinder.calculatedData[0].value;
+        newIndex = pathFinder.calculatedData[0].cellID;
+        for(var d = 0 ; d < pathFinder.calculatedData.length ; d++){
+            if(+pathFinder.calculatedData[d].value < newLowest && ($.inArray(d, tempArr) == -1)){
+                newLowest = +pathFinder.calculatedData[d].value;
+                newIndex = +pathFinder.calculatedData[d].cellID;
+                // loopIndex = f;
+            }
+            else if(+pathFinder.calculatedData[d].value == 10 || +pathFinder.calculatedData[d].value == 14){
+                noLoop(); 
+            }
+        }
+
+        // for(var f = 0 ; f < pathFinder.calculatedData.length ; f++){
+
+        //     console.log(+pathFinder.calculatedData[f].value);
+        //     if(+pathFinder.calculatedData[f].value != -1 && pathFinder.calculatedData[f].visited != true && pathFinder.calculatedData[f].block != true){
+                
+        //         if(f == 0 || temp){
+        //             newLowest = +pathFinder.calculatedData[f].value;
+        //             newIndex = +pathFinder.calculatedData[f].cellID;
+        //             temp = false;
+        //             loopIndex = f;
+        //         }
+        //         else if(+pathFinder.calculatedData[f].value == 10 || +pathFinder.calculatedData[f].value == 14){
+        //             noLoop(); 
+        //         }
+        //         else if(+pathFinder.calculatedData[f].value < newLowest){
+        //             newLowest = +pathFinder.calculatedData[f].value;
+        //             newIndex = +pathFinder.calculatedData[f].cellID;
+        //             // console.log(newLowest,+pathFinder.calculatedData[f].cellID);
+        //             loopIndex = f;
+        //         }
+        //     }else{
+        //         temp = true;
+        //     }
+            
+        // }
+        
+        // for(var c = 0 ; c < pathFinder.calculatedData.length ; c++){
+        //     if(pathFinder.calculatedData[c].cellID != newIndex){
+        //         // console.log(pathFinder.calculatedData[c].cellID + '+++++++++++');
+        //         if(grid.gridData[pathFinder.calculatedData[c].cellID] != undefined){
+        //             if(grid.gridData[pathFinder.calculatedData[c].cellID-1].travel != true){
+        //                 grid.gridData[pathFinder.calculatedData[c].cellID-1].visted = true;
+        //             }
+        //         }
                 
                     
                 
-            }
-            // console.log(pathFinder.calculatedData[c].cellID +"====="+ newIndex);
+        //     }
+        //     // console.log(pathFinder.calculatedData[c].cellID +"====="+ newIndex);
             
-        }
+        // }
             // grid.gridData[newIndex-1].visited = false;
         grid.gridData[newIndex-1].travel = true;
 
